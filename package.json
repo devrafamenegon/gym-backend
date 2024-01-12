@@ -1,8 +1,8 @@
 {
-  "name": "nest-typescript-starter",
+  "name": "gym-backend",
   "private": true,
   "version": "1.0.0",
-  "description": "Nest TypeScript starter repository",
+  "description": "Gym app backend repository",
   "license": "MIT",
   "scripts": {
     "build": "nest build",
