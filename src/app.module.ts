@@ -7,8 +7,8 @@ import config from './config/config';
 
 @Module({
   imports: [
-    UsersModule,
     ConfigModule.forRoot({ isGlobal: true, load: [config] }),
+    UsersModule,
     AuthModule,
   ],
 })
