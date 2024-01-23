@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { UsersModule } from '../users/users.module';
 import { ConfigService } from '@nestjs/config';
 import { AuthController } from './controllers/auth.controller';
@@ -14,7 +14,7 @@ import { AuthGuard } from './guards/auth.guard';
       useFactory: async (configService: ConfigService) => {
         return {
           secret: configService.get('jwt.secret'),
-          signOptions: { expiresIn: '7d' },
+          signOptions: { expiresIn: configService.get('jwt.expires') },
         };
       },
     }),
