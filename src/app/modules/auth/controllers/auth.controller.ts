@@ -31,7 +31,11 @@ export class AuthController implements AuthControllerInterface {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  login(@Body() body: LoginDto) {
-    return this.authService.login(body);
+  async login(@Body() body: LoginDto) {
+    try {
+      return await this.authService.login(body);
+    } catch (error) {
+      ErrorResFactory.throwExceptionFromError(error);
+    }
   }
 }
