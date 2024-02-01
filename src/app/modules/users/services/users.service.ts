@@ -1,14 +1,13 @@
 import { PrismaService } from '@/infra/prisma/services/prisma.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserReqDto } from '../dtos/requests/user.req.dto';
-
-export type User = any;
+import { UserResDto } from '../dtos/responses/user.res.dto';
 
 @Injectable()
 export class UsersService {
   constructor(private prismaService: PrismaService) {}
 
-  async findByUsername(username: string): Promise<User | undefined> {
+  async findByUsername(username: string): Promise<UserResDto | undefined> {
     return this.prismaService.user.findFirst({
       where: { username },
     });
