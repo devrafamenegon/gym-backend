@@ -22,18 +22,8 @@ export class UsersService {
       where: { email: data.email },
     });
 
-    if (userWithUsernameExists) {
-      throw new HttpException(
-        `User ${data.username} already exists`,
-        HttpStatus.CONFLICT,
-      );
-    }
-
-    if (userWithEmailExists) {
-      throw new HttpException(
-        `User ${data.email} already exists`,
-        HttpStatus.CONFLICT,
-      );
+    if (userWithUsernameExists || userWithEmailExists) {
+      throw new HttpException(`User already exists`, HttpStatus.CONFLICT);
     }
 
     await this.prismaService.user.create({

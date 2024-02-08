@@ -10,24 +10,32 @@ import { RegisterDto } from '../dtos/requests/register.req.dto';
 import { LoginDto } from '../dtos/requests/login.req.dto';
 import { AuthServiceInterface } from './auth.service.interface';
 import { UserReqDto } from '../../users/dtos/requests/user.req.dto';
+import { PrismaService } from '@/infra/prisma/services/prisma.service';
 
 @Injectable()
 export class AuthService implements AuthServiceInterface {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    private prismaService: PrismaService,
   ) {}
 
   async login(data: LoginDto) {
     const { username, password } = data;
 
-    const user = await this.usersService.findByUsername(username);
+    const user = await this.prismaService.user.findFirst({
+      where: { username },
+    });
 
-    if (user?.password !== password) {
+    if (!user) {
       throw new UnauthorizedException();
     }
 
-    const payload = { sub: user.userId, username: user.username };
+    if (user.password !== password) {
+      throw new UnauthorizedException();
+    }
+
+    const payload = { sub: user.id, username: user.username };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
